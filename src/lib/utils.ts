@@ -16,7 +16,9 @@ export const calculateSummaryMetrics = (
 	const totalSatsSold = sellTrades.reduce((sum, trade) => sum + trade.satsSold, 0);
 	const totalFiatGained = sellTrades.reduce((sum, trade) => sum + trade.usdReceived, 0);
 	const totalPremiumProfit = sellTrades.reduce((sum, trade) => sum + trade.premiumGain, 0);
-	const reinvestedFiat = reinvestmentTrades.reduce((sum, trade) => sum + trade.reinvestAmount, 0);
+	const reinvestedFiat = reinvestmentTrades
+		.filter(trade => trade.fromProfitPool)
+		.reduce((sum, trade) => sum + trade.reinvestAmount, 0);
 	const totalSatsReinvested = reinvestmentTrades.reduce((sum, trade) => sum + trade.satsBought, 0);
 
 	// Calculate remaining fiat pool - this is the premium profit minus what's been reinvested

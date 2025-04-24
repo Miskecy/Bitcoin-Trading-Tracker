@@ -1,11 +1,9 @@
 // /app/page.tsx
 'use client';
 
-import { useState } from 'react';
 import SellTradeTable from '@/components/trades/SellTradeTable';
 import ReinvestmentTable from '@/components/trades/ReinvestmentTable';
 import SummarySection from '@/components/trades/SummarySection';
-import ImportJsonModal from '@/components/trades/ImportJsonModal';
 import { useTradeStore } from '@/store/useTradeStore';
 
 import { Button } from '@/components/ui/button';
@@ -13,10 +11,10 @@ import {
 	CardDescription,
 	CardTitle,
 } from '@/components/ui/card';
-import { Bitcoin, FileDown, AlertTriangle } from 'lucide-react';
+import { Bitcoin, AlertTriangle } from 'lucide-react';
 
 export default function Home() {
-	const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+
 	const clearAllData = useTradeStore((state) => state.clearAllData);
 
 	const handleClear = () => {
@@ -46,10 +44,6 @@ export default function Home() {
 				</div>
 
 				<div className="flex gap-2 flex-wrap">
-					<Button onClick={() => setIsImportModalOpen(true)} className='cursor-pointer bg-green-300 hover:bg-green-300/80'>
-						<FileDown className="w-4 h-4 mr-1" />
-						Import JSON
-					</Button>
 					<Button onClick={handleClear} className='cursor-pointer bg-red-300 hover:bg-red-300/80'>
 						<AlertTriangle className="w-5 h-5 mr-1" />
 						Clear All Data
@@ -64,11 +58,7 @@ export default function Home() {
 			<SellTradeTable />
 			<ReinvestmentTable />
 
-			{/* Modal */}
-			<ImportJsonModal
-				isOpen={isImportModalOpen}
-				onClose={() => setIsImportModalOpen(false)}
-			/>
+
 		</div>
 	);
 }

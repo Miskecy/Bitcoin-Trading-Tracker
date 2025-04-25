@@ -29,11 +29,11 @@ const SellTradeTable = () => {
 
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [date, setDate] = useState<Date | undefined>(new Date());
-	const [newTrade, setNewTrade] = useState<Omit<SellTrade, 'id' | 'premiumGain' | 'sentToFiatPool'>>({
+	const [newTrade, setNewTrade] = useState<Omit<SellTrade, 'id' | 'sentToFiatPool'>>({
 		date: new Date().toISOString().split('T')[0],
 		satsSold: 0,
 		btcPrice: 0,
-		premium: 0,
+		premiumGain: 0,
 		usdReceived: 0,
 		costBasis: 0,
 		notes: '',
@@ -43,7 +43,7 @@ const SellTradeTable = () => {
 	const [displayValues, setDisplayValues] = useState({
 		satsSold: '',
 		btcPrice: '',
-		premium: '',
+		premiumGain: '',
 		usdReceived: '',
 		costBasis: ''
 	});
@@ -53,7 +53,7 @@ const SellTradeTable = () => {
 		setDisplayValues({
 			satsSold: newTrade.satsSold ? newTrade.satsSold.toLocaleString() : '',
 			btcPrice: newTrade.btcPrice ? `$${newTrade.btcPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '',
-			premium: newTrade.premium ? `${newTrade.premium}%` : '',
+			premiumGain: newTrade.premiumGain ? `${newTrade.premiumGain}%` : '',
 			usdReceived: newTrade.usdReceived ? `$${newTrade.usdReceived.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '',
 			costBasis: newTrade.costBasis ? `$${newTrade.costBasis.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : ''
 		});
@@ -81,7 +81,7 @@ const SellTradeTable = () => {
 			// Get the latest values after the update
 			const satsSold = name === 'satsSold' ? numericValue : prev.satsSold;
 			const btcPrice = name === 'btcPrice' ? numericValue : prev.btcPrice;
-			const premium = name === 'premium' ? numericValue : prev.premium;
+			const premium = name === 'premium' ? numericValue : prev.premiumGain;
 
 			// If any of these values change, recalculate related fields
 			if (name === 'satsSold' || name === 'btcPrice' || name === 'premium') {
@@ -115,7 +115,7 @@ const SellTradeTable = () => {
 					updated.btcPrice = value ? `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '';
 					break;
 				case 'premium':
-					updated.premium = value ? `${value}%` : '';
+					updated.premiumGain = value ? `${value}%` : '';
 					break;
 				case 'usdReceived':
 					updated.usdReceived = value ? `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '';
@@ -153,7 +153,7 @@ const SellTradeTable = () => {
 
 			// Calculate price with premium applied
 			const priceWithPremium = (name === 'btcPrice' ? numericValue : updatedTrade.btcPrice) *
-				(1 + (name === 'premium' ? numericValue : updatedTrade.premium) / 100);
+				(1 + (name === 'premium' ? numericValue : updatedTrade.premiumGain) / 100);
 
 			// Update USD received based on satsSold and priceWithPremium
 			const satsSold = name === 'satsSold' ? numericValue : updatedTrade.satsSold;
@@ -201,7 +201,7 @@ const SellTradeTable = () => {
 			date: new Date().toISOString().split('T')[0],
 			satsSold: 0,
 			btcPrice: 0,
-			premium: 0,
+			premiumGain: 0,
 			usdReceived: 0,
 			costBasis: 0,
 			notes: '',
@@ -332,7 +332,7 @@ const SellTradeTable = () => {
 												decimalScale={2}
 												fixedDecimalScale
 												allowNegative={true}
-												value={newTrade.premium}
+												value={newTrade.premiumGain}
 												onValueChange={(values) => {
 													const { floatValue } = values;
 													handleDirectInputChange('premium', String(floatValue ?? 0));
@@ -524,9 +524,9 @@ const SellTradeTable = () => {
 													<span className="font-medium text-foreground">BTC Price:</span>
 													<span>{formatUSD(trade.btcPrice)}</span>
 												</div>
-												{trade.premium && <div className="flex justify-between">
+												{trade.premiumGain && <div className="flex justify-between">
 													<span className="font-medium text-foreground">Premium:</span>
-													<span>{trade.premium}%</span>
+													<span>{trade.premiumGain}%</span>
 												</div>}
 												<div className="flex justify-between">
 													<span className="font-medium text-foreground">USD Received:</span>

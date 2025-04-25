@@ -5,6 +5,7 @@ export interface SellTrade {
 	date: string;
 	satsSold: number;
 	btcPrice: number;
+	premium: number;
 	usdReceived: number;
 	costBasis: number;
 	premiumGain: number;
